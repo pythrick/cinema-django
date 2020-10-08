@@ -8,17 +8,13 @@ from cinema.usecases.reservas import reservar_sala, listar_reservas
 
 
 class SalasViewSet(viewsets.ViewSet):
-    @action(methods=['get', 'post'], detail=True)
+    @action(methods=["get", "post"], detail=True)
     def reservas(self, request, pk):
         id_sala = int(pk)
-        if request.method == 'POST':
+        if request.method == "POST":
             try:
                 reservar_sala(id_sala)
-                return HttpResponse(
-                    json.dumps({"msg": "Sala reservada"}),
-                    content_type="application/json",
-                    status=201,
-                )
+                return JsonResponse({"msg": "Sala reservada"}, status=201, )
             except PermissionError as e:
                 return JsonResponse({"msg": str(e)}, status=422)
         else:
